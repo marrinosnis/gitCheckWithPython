@@ -1,6 +1,18 @@
 import git
 import os
+from tkinter.filedialog import askdirectory
+from pathlib import Path
+from subprocess import call, STDOUT
 
+
+while True:
+    out_path = input("Please give the directory path to check if it has repository")
+    path = Path(out_path)
+
+    if call(["git", "-C", path, "branch"], stderr=STDOUT, stdout=open(os.devnull, 'w')) != 0:
+        print("The current directory is NOT a git repository. Try another\n")
+    else:
+        break
 
 repo = git.Repo("~/Desktop/gitTest")
 
@@ -8,9 +20,9 @@ repo = git.Repo("~/Desktop/gitTest")
 local_branches = []
 for branch in repo.branches:
     local_branches.append(branch)
-    # print(branch)
+    print(branch)
 
-print(local_branches)
+# print(local_branches)
 
 nameBranch = "master"
 try:
