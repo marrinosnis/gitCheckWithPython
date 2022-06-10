@@ -3,6 +3,7 @@ import os
 from tkinter.filedialog import askdirectory
 from pathlib import Path
 from subprocess import call, STDOUT
+from colorama import Fore, Style
 
 
 while True:
@@ -14,15 +15,22 @@ while True:
     else:
         break
 
-repo = git.Repo("~/Desktop/gitTest")
+repo = git.Repo(path)
+currentBranch = repo.active_branch
 
 # find all local branches
-local_branches = []
+dict_branches = {}
+pos = 1
 for branch in repo.branches:
-    local_branches.append(branch)
-    print(branch)
+    dict_branches[pos] = branch
+    pos += 1
 
-# print(local_branches)
+for num, br in dict_branches.items():
+    if currentBranch == br:
+        print(Fore.LIGHTYELLOW_EX + str(num) + "  :  " + str(br) + Style.RESET_ALL)
+    else:
+        print(num, " : ", br)
+print("\nYou are currently on the " + Fore.LIGHTYELLOW_EX + str(currentBranch) + Style.RESET_ALL + " branch.\n")
 
 nameBranch = "master"
 try:
