@@ -1,13 +1,14 @@
 import git
 import os
-from tkinter.filedialog import askdirectory
+from tkinter import filedialog
 from pathlib import Path
 from subprocess import call, STDOUT
 from colorama import Fore, Style
 
-
 while True:
-    out_path = input("Please give the directory path to check if it has repository")
+    print("Please give the directory path to check if it has repository")
+    filename = filedialog.askdirectory()
+    out_path = str(filename)
     path = Path(out_path)
 
     if call(["git", "-C", path, "branch"], stderr=STDOUT, stdout=open(os.devnull, 'w')) != 0:
@@ -56,8 +57,8 @@ except Exception as error:
     if not repo.remotes.origin.fetch(chosenBranch):
         print("No changes in the current branch")
     else:
-        ask = input("There are new changes from the fetch action.\nWould you like to merge the fetched changes")
-        if ask == "yes":
+        ask = input("There are new changes from the fetch action.\nWould you like to merge the fetched changes.\nType 'yes' or 'no  ")
+        if ask == "yes" or ask == "y" or ask == "Yes":
             repo.remotes.origin.pull(chosenBranch)
             print("\nThe new changes have been merge in your current branch!!")
         else:
